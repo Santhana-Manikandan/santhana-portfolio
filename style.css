@@ -81,7 +81,7 @@ nav ul {
   display: flex;
   gap: 25px;
   list-style: none;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 nav ul li a {
@@ -711,8 +711,8 @@ html { scroll-behavior: smooth; }
   .about-container { flex-direction: column; gap: 40px; align-items: center; }
   .card.big { width: 100%; max-width: 360px; padding: 40px 20px; }
   .about-right { max-width: 100%; align-items: center; }
-  .main-text { text-align: center; }
-
+  .main-text { text-align: justify;  }
+  .more-btn { margin-top: 20px; }
   /* More Info */
   #more-info { padding: 120px 24px 100px; }
   .more-container { flex-direction: column; align-items: center; gap: 40px; }
@@ -800,4 +800,17 @@ html { scroll-behavior: smooth; }
   nav ul li a { font-size: 10px; }
   .home-logo { width: 100px; height: 100px; }
   .card.big { width: 100%; }
+}
+
+ @media (hover: none) {
+  .project-card:active .overlay {
+    opacity: 1;
+  }
+
+  .skill-tag:active,
+  .exp-card:active,
+  .skill-group:active,
+  .fab-option:active {
+    transform: scale(0.95);
+  }
 }
