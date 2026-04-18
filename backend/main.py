@@ -24,7 +24,7 @@ async def send_message(
     app_password = os.getenv("EMAIL_PASS")
 
     # 👉 YOU will receive the email
-    receiver_email = sender_email
+    receiver_email = "msanthana2006@gmail.com"
 
     msg = MIMEText(
         f"""
