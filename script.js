@@ -139,7 +139,7 @@ form.addEventListener("submit", async (e) => {
   const formData = new FormData(form);
 
   try {
-    const response = await fetch("http://127.0.0.1:8001/send-message", {
+    const response = await fetch("https://santhana-portfolio.onrender.com", {
       method: "POST",
       body: formData
     });
