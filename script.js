@@ -15,9 +15,7 @@ window.onload = () => {
       setTimeout(() => {
         mainContent.style.opacity = "1";
       }, 50);
-
-    }, 1000); 
-
+    }, 1000);
   }, 2500);
 };
 
@@ -59,68 +57,68 @@ window.addEventListener("scroll", () => {
 
 //toggle Button
 function toggleFab() {
-  const btn = document.getElementById('fabBtn');
-  const options = document.getElementById('fabOptions');
-  btn.classList.toggle('open');
-  options.classList.toggle('visible');
+  const btn = document.getElementById("fabBtn");
+  const options = document.getElementById("fabOptions");
+  btn.classList.toggle("open");
+  options.classList.toggle("visible");
 }
 
 // Close if clicked outside
-document.addEventListener('click', function (e) {
-  const fab = document.getElementById('fabContainer');
+document.addEventListener("click", function (e) {
+  const fab = document.getElementById("fabContainer");
   if (!fab.contains(e.target)) {
     closeFab();
   }
 });
 
 // Close on scroll
-window.addEventListener('scroll', function () {
+window.addEventListener("scroll", function () {
   closeFab();
 });
 
 // Close on touch move (swipe/scroll on mobile)
-window.addEventListener('touchmove', function () {
+window.addEventListener("touchmove", function () {
   closeFab();
 });
 
 function closeFab() {
-  document.getElementById('fabBtn').classList.remove('open');
-  document.getElementById('fabOptions').classList.remove('visible');
+  document.getElementById("fabBtn").classList.remove("open");
+  document.getElementById("fabOptions").classList.remove("visible");
 }
-document.addEventListener('DOMContentLoaded', function () {
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  const navOverlay = document.getElementById('navOverlay');
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  const navOverlay = document.getElementById("navOverlay");
 
   // Open / close toggle
-  hamburgerBtn.addEventListener('click', function () {
-    mobileNav.classList.toggle('open');
-    navOverlay.classList.toggle('open');
+  hamburgerBtn.addEventListener("click", function () {
+    mobileNav.classList.toggle("open");
+    navOverlay.classList.toggle("open");
   });
 
   // Close when overlay (dark background) is clicked
-  navOverlay.addEventListener('click', function () {
-    mobileNav.classList.remove('open');
-    navOverlay.classList.remove('open');
+  navOverlay.addEventListener("click", function () {
+    mobileNav.classList.remove("open");
+    navOverlay.classList.remove("open");
   });
 
   // Each nav link — close menu THEN scroll to section
-  document.querySelectorAll('.mobile-nav a').forEach(function (link) {
-    link.addEventListener('click', function (e) {
+  document.querySelectorAll(".mobile-nav a").forEach(function (link) {
+    link.addEventListener("click", function (e) {
       e.preventDefault(); // stop default jump
 
       // Close the menu
-      mobileNav.classList.remove('open');
-      navOverlay.classList.remove('open');
+      mobileNav.classList.remove("open");
+      navOverlay.classList.remove("open");
 
       // Get the target section
-      const targetId = this.getAttribute('href'); // e.g. "#home"
+      const targetId = this.getAttribute("href"); // e.g. "#home"
       const targetSection = document.querySelector(targetId);
 
       if (targetSection) {
         // Small delay so menu slides out before scroll
         setTimeout(function () {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
+          targetSection.scrollIntoView({ behavior: "smooth" });
         }, 300);
       }
     });
