@@ -139,10 +139,10 @@ form.addEventListener("submit", async (e) => {
   const formData = new FormData(form);
 
   try {
-    const response = await fetch("https://santhana-portfolio.onrender.com", {
-      method: "POST",
-      body: formData
-    });
+   const response = await fetch("https://santhana-portfolio.onrender.com/send-message", {
+  method: "POST",
+  body: formData
+});
 
     // 🔥 SAFE JSON PARSE
     let result = {};
@@ -157,14 +157,14 @@ form.addEventListener("submit", async (e) => {
       successMsg.style.display = "block";
       form.reset();
     } else {
-      alert(result.error || "Something went wrong ❌");
+      alert(result.error || "Something went wrong ");
       button.innerText = "Send Message";
       button.disabled = false;
     }
 
   } catch (error) {
     console.error("Fetch error:", error);
-    alert("Server not reachable ❌");
+    alert("Server not reachable ");
 
     button.innerText = "Send Message";
     button.disabled = false;
