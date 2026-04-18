@@ -20,15 +20,29 @@ async def send_message(
     email: str = Form(...),
     message: str = Form(...)
 ):
-    # ✅ Correct placement (inside function)
     sender_email = os.getenv("EMAIL_USER")
     app_password = os.getenv("EMAIL_PASS")
-    receiver_email = os.getenv("EMAIL_USER")
 
-    msg = MIMEText(f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}")
+    # 👉 YOU will receive the email
+    receiver_email = sender_email
+
+    msg = MIMEText(
+        f"""
+New Contact Form Message 🚀
+
+Name: {name}
+Email: {email}
+
+Message:
+{message}
+""",
+        "plain"
+    )
+
     msg["Subject"] = f"Message from {name}"
     msg["From"] = sender_email
     msg["To"] = receiver_email
+    msg["Reply-To"] = email   # 👈 important
 
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -40,9 +54,9 @@ async def send_message(
         return {"message": "Email sent successfully"}
 
     except Exception as e:
+        print("ERROR:", str(e))  # 👈 helpful for logs
         return {"error": str(e)}
 
 @app.get("/ping")
 def ping():
     return {"message": "pong"}
-
