@@ -2,6 +2,7 @@ from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
 import smtplib
 from email.mime.text import MIMEText
+import os
 
 app = FastAPI()
 
@@ -19,10 +20,10 @@ async def send_message(
     email: str = Form(...),
     message: str = Form(...)
 ):
-    sender_email = "msanthana2006@gmail.com"
-    app_password = "kccgsxoktmegzill"
-
-    receiver_email = "msanthana2006@gmail.com"
+    # ✅ Correct placement (inside function)
+    sender_email = os.getenv("EMAIL_USER")
+    app_password = os.getenv("EMAIL_PASS")
+    receiver_email = os.getenv("EMAIL_USER")
 
     msg = MIMEText(f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}")
     msg["Subject"] = f"Message from {name}"
