@@ -87,3 +87,42 @@ function closeFab() {
   document.getElementById('fabBtn').classList.remove('open');
   document.getElementById('fabOptions').classList.remove('visible');
 }
+document.addEventListener('DOMContentLoaded', function () {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const navOverlay = document.getElementById('navOverlay');
+
+  // Open / close toggle
+  hamburgerBtn.addEventListener('click', function () {
+    mobileNav.classList.toggle('open');
+    navOverlay.classList.toggle('open');
+  });
+
+  // Close when overlay (dark background) is clicked
+  navOverlay.addEventListener('click', function () {
+    mobileNav.classList.remove('open');
+    navOverlay.classList.remove('open');
+  });
+
+  // Each nav link — close menu THEN scroll to section
+  document.querySelectorAll('.mobile-nav a').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault(); // stop default jump
+
+      // Close the menu
+      mobileNav.classList.remove('open');
+      navOverlay.classList.remove('open');
+
+      // Get the target section
+      const targetId = this.getAttribute('href'); // e.g. "#home"
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
+        // Small delay so menu slides out before scroll
+        setTimeout(function () {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    });
+  });
+});

@@ -685,6 +685,84 @@ min-height: calc(100vh - 60px);
   right: 0;
   font-weight: bold;
 }
+/* ============================================
+   HAMBURGER MENU — mobile only
+   ============================================ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: #2f3e2f;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #FFD6A6;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* ↓ REPLACE EVERYTHING BELOW THIS LINE ↓ */
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 70px;
+  right: 14px;
+  width: 160px;
+  background: #1a2a1a;
+  z-index: 1001;
+  flex-direction: column;
+  border-radius: 12px;
+  padding: 10px 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.mobile-nav.open {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: background 0.2s;
+  border-radius: 8px;
+  margin: 2px 6px;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a:active {
+  background: rgba(255,255,255,0.1);
+  color: #ffc926;
+}
+
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 998;
+}
+
+.nav-overlay.open { display: block; }
+
 
 
 /* ============================================
@@ -714,44 +792,51 @@ min-height: calc(100vh - 60px);
   .logo-container h1 { font-size: 52px; letter-spacing: 3px; }
   .logo-container p { font-size: 26px; margin-top: 16px; }
 
+  /* Hamburger — show on mobile, hide desktop nav */
+  .hamburger { display: flex; }
+  nav ul { display: none !important; }
+  nav ul.desktop-nav { display: none !important; }
+
   /* Navbar */
   nav { padding: 8px 20px; }
-  nav ul { gap: 14px; margin-top: 14px; }
-  nav ul li a { font-size: 14px; }
   .logo { width: 46px; height: 46px; }
 
-  /* Home */
+  /* Home — FIX: constrain logo so text is visible */
   h1 { font-size: 64px; }
   h2 { font-size: 46px; }
-  .home-logo { width: 150px; height: 150px; }
+  .home-logo {
+    width: 130px;
+    height: 130px;
+    max-height: 130px;
+    object-fit: contain;
+  }
   .section { padding: 30px 20px; }
+  .content { gap: 14px; }
 
   /* FAB */
   .fab-container { bottom: 50px; right: 20px; }
 
-  /* About — extra top padding so content clears the navbar */
+  /* About */
   .about-title { font-size: 32px; margin-bottom: 40px; }
-  #about { padding: 100px 20px 60px; }          /* ← was 120px 20px 80px */
+  #about { padding: 100px 20px 60px; }
   #about .about-container { flex-direction: column; gap: 40px; align-items: center; }
   .card.big { width: 100%; max-width: 360px; padding: 40px 20px; }
   .about-right { max-width: 100%; align-items: center; }
   .main-text { text-align: justify; }
 
-  /* More Info — tighten top padding, let skills go 2-column */
-  #more-info { padding: 80px 24px 80px; }       /* ← was 120px 24px 100px */
+  /* More Info */
+  #more-info { padding: 80px 24px 80px; }
   .more-container { flex-direction: column; align-items: center; gap: 40px; }
   .experience { align-items: center; width: 100%; }
   .exp-card { max-width: 100%; }
   .skills { max-width: 100%; width: 100%; }
-    .more-btn { font-size: 14px; padding: 10px 18px; }
+  .more-btn { font-size: 14px; padding: 10px 18px; }
 
-
-  /* 2-column skill tags so the grid fits on screen */
   .skills-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .skill-group { animation: none; }             /* stop float fighting the grid */
+  .skill-group { animation: none; }
 
-  /* Projects — ensure last card isn't hidden by footer */
-  #projects.section { padding: 100px 24px 80px; } /* ← added 80px bottom */
+  /* Projects */
+  #projects.section { padding: 100px 24px 80px; }
   .project-title { font-size: 32px; margin-bottom: 40px; }
   .project-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
 
@@ -759,6 +844,7 @@ min-height: calc(100vh - 60px);
   .contact-heading { font-size: 32px; }
   .contact-title { font-size: 18px; }
 }
+
 /* Mobile (max 480px) */
 @media (max-width: 480px) {
   /* Splash */
@@ -766,17 +852,22 @@ min-height: calc(100vh - 60px);
   .logo-container h1 { font-size: 38px; letter-spacing: 2px; }
   .logo-container p { font-size: 20px; }
 
-  /* Navbar — icon only for logo, hide text links or shrink */
+  /* Navbar */
   nav { padding: 6px 14px; }
-  nav ul { gap: 10px; margin-top: 12px; }
-  nav ul li a { font-size: 12px; }
+  nav ul { display: none !important; }
+  .hamburger { display: flex; }
   .logo { width: 38px; height: 38px; }
 
-  /* Home */
+  /* Home — FIX: hard-lock logo size */
   h1 { font-size: 42px; }
   h2 { font-size: 34px; }
   p { font-size: 15px; }
-  .home-logo { width: 120px; height: 120px; }
+  .home-logo {
+    width: 110px;
+    height: 110px;
+    max-height: 110px;
+    object-fit: contain;
+  }
   .section { padding: 20px 16px; }
   .content { gap: 14px; }
 
@@ -819,16 +910,15 @@ min-height: calc(100vh - 60px);
   /* Footer */
   .footer { font-size: 10px; padding: 8px; }
 }
-/*360 screen */
+
+/* 360px screen */
 @media (max-width: 360px) {
-  /* Splash */
   .logo-container h1 { font-size: 30px; }
   .logo-container p  { font-size: 16px; }
 
-  /* Navbar */
-  nav ul li a { font-size: 10px; }
+  nav ul { display: none !important; }
+  .hamburger { display: flex; }
 
-  /* Home — hard lock to viewport, no overflow */
   #home.section {
     height: 100vh;
     overflow: hidden;
@@ -837,17 +927,20 @@ min-height: calc(100vh - 60px);
   h1         { font-size: 30px; }
   h2         { font-size: 24px; }
   p          { font-size: 13px; }
-  .home-logo { width: 90px;   min-height: 100vh;; }
+  .home-logo {
+    width: 90px;
+    height: 90px;
+    max-height: 90px;
+    object-fit: contain;
+  }
   .content   { gap: 10px; }
 
-  /* About */
   #about {
     height: auto;
     min-height: 100vh;
     padding: 90px 14px 60px;
   }
 
-  /* More Info */
   #more-info {
     height: auto;
     min-height: 100vh;
@@ -856,7 +949,6 @@ min-height: calc(100vh - 60px);
   .more-container  { flex-direction: column; gap: 30px; }
   .skills-list     { grid-template-columns: 1fr; }
 
-  /* Projects */
   #projects.section {
     height: auto;
     min-height: 100vh;
@@ -869,15 +961,10 @@ min-height: calc(100vh - 60px);
   .card.big { width: 100%; }
 }
 
- @media (hover: none) {
-  .project-card:active .overlay {
-    opacity: 1;
-  }
-
+@media (hover: none) {
+  .project-card:active .overlay { opacity: 1; }
   .skill-tag:active,
   .exp-card:active,
   .skill-group:active,
-  .fab-option:active {
-    transform: scale(0.95);
-  }
+  .fab-option:active { transform: scale(0.95); }
 }
