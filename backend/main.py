@@ -41,3 +41,7 @@ async def send_message(
 
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/ping")
+async def ping():
+    return {"message":"pong"}
