@@ -43,9 +43,6 @@ async def send_message(
         return {"error": str(e)}
 
 @app.get("/ping")
-async def ping():
-    return {"message":"pong"}
+def ping():
+    return {"message": "pong"}
 
-@app.get("/")
-def home():
-    return {"message": "Render working 🚀"}
