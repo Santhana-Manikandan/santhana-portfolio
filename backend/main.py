@@ -66,7 +66,7 @@ Message:
         server.sendmail(sender_email, receiver_email, msg.as_string())
 
         server.quit()
-        print("✅ Email sent successfully!")
+        print(" Email sent successfully!")
 
         return {"message": "Email sent successfully"}
 
