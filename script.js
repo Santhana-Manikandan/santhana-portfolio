@@ -54,6 +54,47 @@ window.addEventListener("scroll", () => {
     }
   });
 });
+// ===== Desktop dropdown =====
+const projectsToggle = document.getElementById("projectsToggle");
+const projectsDropdown = document.getElementById("projectsDropdown");
+
+projectsToggle.addEventListener("click", (e) => {
+  e.preventDefault(); // stop jumping to #projects on first tap
+  const isOpen = projectsDropdown.classList.contains("open");
+  projectsDropdown.classList.toggle("open", !isOpen);
+  projectsToggle.classList.toggle("open", !isOpen);
+});
+
+// Close desktop dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (
+    !projectsToggle.contains(e.target) &&
+    !projectsDropdown.contains(e.target)
+  ) {
+    projectsDropdown.classList.remove("open");
+    projectsToggle.classList.remove("open");
+  }
+});
+
+// Close after selecting a project (desktop)
+projectsDropdown.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    projectsDropdown.classList.remove("open");
+    projectsToggle.classList.remove("open");
+  });
+});
+
+// ===== Mobile dropdown (accordion) =====
+const mobileProjectsToggle = document.getElementById("mobileProjectsToggle");
+const mobileProjectsDropdown = document.getElementById(
+  "mobileProjectsDropdown",
+);
+
+mobileProjectsToggle.addEventListener("click", () => {
+  const isOpen = mobileProjectsDropdown.classList.contains("open");
+  mobileProjectsDropdown.classList.toggle("open", !isOpen);
+  mobileProjectsToggle.classList.toggle("open", !isOpen);
+});
 
 //toggle Button
 function toggleFab() {
@@ -139,10 +180,13 @@ form.addEventListener("submit", async (e) => {
   const formData = new FormData(form);
 
   try {
-   const response = await fetch("https://santhana-portfolio.onrender.com/send-message", {
-  method: "POST",
-  body: formData
-});
+    const response = await fetch(
+      "https://santhana-portfolio.onrender.com/send-message",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
 
     // 🔥 SAFE JSON PARSE
     let result = {};
@@ -161,7 +205,6 @@ form.addEventListener("submit", async (e) => {
       button.innerText = "Send Message";
       button.disabled = false;
     }
-
   } catch (error) {
     console.error("Fetch error:", error);
     alert("Server not reachable ");
@@ -170,4 +213,3 @@ form.addEventListener("submit", async (e) => {
     button.disabled = false;
   }
 });
-
