@@ -166,6 +166,34 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Project card image arrows (cycles through images listed in data-images,
+// comma-separated. If a card only has one image, arrows auto-hide.)
+document.querySelectorAll(".proj-image-wrap").forEach((wrap) => {
+  const imgEl = wrap.querySelector(".proj-img");
+  const leftBtn = wrap.querySelector(".proj-arrow.left");
+  const rightBtn = wrap.querySelector(".proj-arrow.right");
+  const images = (wrap.dataset.images || imgEl.src)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (images.length <= 1) {
+    if (leftBtn) leftBtn.hidden = true;
+    if (rightBtn) rightBtn.hidden = true;
+    return;
+  }
+
+  let index = 0;
+
+  function showImage(newIndex) {
+    index = (newIndex + images.length) % images.length;
+    imgEl.src = images[index];
+  }
+
+  if (leftBtn) leftBtn.addEventListener("click", () => showImage(index - 1));
+  if (rightBtn) rightBtn.addEventListener("click", () => showImage(index + 1));
+});
+
 //contact
 const form = document.getElementById("contact-form");
 const successMsg = document.getElementById("success-message");
