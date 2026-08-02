@@ -1,19 +1,24 @@
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import smtplib
-from email.mime.text import MIMEText
+import requests
 import os
 
 app = FastAPI()
 
-# ✅ CORS (allow your frontend)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://santhana-portfolio.vercel.app"],
+    allow_origins=[
+        "https://santhana-portfolio.vercel.app",
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+
 
 @app.post("/send-message")
 async def send_message(
@@ -21,58 +26,49 @@ async def send_message(
     email: str = Form(...),
     message: str = Form(...)
 ):
-    sender_email = os.getenv("EMAIL_USER")
-    app_password = os.getenv("EMAIL_PASS")
+    if not RESEND_API_KEY:
+        raise HTTPException(
+            status_code=500,
+            detail="RESEND_API_KEY not found"
+        )
 
-    # 👉 You receive the email
-    receiver_email = sender_email
+    headers = {
+        "Authorization": f"Bearer {RESEND_API_KEY}",
+        "Content-Type": "application/json",
+    }
 
-    # 🔍 Debug (check in Render logs)
-    print("EMAIL:", sender_email)
-    print("PASS:", app_password)
+    data = {
+        "from": "Portfolio Contact <onboarding@resend.dev>",
+        "to": ["letmethink2006@gmail.com"],   # <-- your email
+        "subject": f"New Portfolio Message from {name}",
+        "reply_to": email,
+        "html": f"""
+        <h2>New Contact Form Message</h2>
 
-    # ❌ Check if env variables missing
-    if not sender_email or not app_password:
-        raise HTTPException(status_code=500, detail="Email credentials not set")
+        <p><b>Name:</b> {name}</p>
+        <p><b>Email:</b> {email}</p>
 
-    # Create email
-    msg = MIMEText(
-        f"""
-New Contact Form Message 🚀
+        <p><b>Message:</b></p>
 
-Name: {name}
-Email: {email}
+        <p>{message}</p>
+        """
+    }
 
-Message:
-{message}
-""",
-        "plain"
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers=headers,
+        json=data
     )
 
-    msg["Subject"] = f"Message from {name}"
-    msg["From"] = sender_email
-    msg["To"] = receiver_email
-    msg["Reply-To"] = email  # so you can reply to user
-
-    try:
-        print("Connecting to SMTP...")
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-
-        print("Logging in...")
-        server.login(sender_email, app_password)
-
-        print("Sending email...")
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-
-        server.quit()
-        print(" Email sent successfully!")
-
+    if response.status_code in (200, 201):
         return {"message": "Email sent successfully"}
 
-    except Exception as e:
-        print("❌ ERROR:", str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+    print(response.text)
+
+    raise HTTPException(
+        status_code=500,
+        detail=response.text
+    )
 
 
 @app.get("/")
