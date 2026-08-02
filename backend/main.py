@@ -38,7 +38,7 @@ async def send_message(
     }
 
     data = {
-        "from": "Portfolio Contact <onboarding@resend.dev>",
+        "from": "onboarding@resend.dev",
         "to": ["msanthana2006@gmail.com"],   # <-- your email
         "subject": f"New Portfolio Message from {name}",
         "reply_to": email,
